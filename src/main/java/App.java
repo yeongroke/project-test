@@ -1,73 +1,54 @@
 import java.util.Scanner;
 
+import Context.ApplicationContext;
+import Controller.Controller;
+
 public class App {
-    //asdfasdfasfsdafasfadsfdasfadsfasfasdfsadfsad
-    static class vari
-    {
-        protected String sori;
-        protected String dom2;
-        protected int dobi;
-        
-        public String getSori() {
-            return sori;
-        }
-        public void setSori(String sori) {
-            this.sori = sori;
-        }
-        public String getDom2() {
-            return dom2;
-        }
-        public void setDom2(String dom2) {
-            this.dom2 = dom2;
-        }
-        public int getDobi() {
-            return dobi;
-        }
-        public void setDobi(int dobi) {
-            this.dobi = dobi;
-        }
-        
-    }
-    static vari[] va=new vari[100];
-    static int index=0;
-    static Scanner sc =new Scanner(System.in);
-    
-    static void output()
-    {
-        for(int i=0;i<index; i++)
+    static Scanner sc = new Scanner(System.in);
+
+    public static String swit() {
+        System.out.println("메뉴");
+        System.out.println("1.학생 관리");
+        System.out.println("2.매니저 관리");
+        System.out.println("3.선생님 관리");
+        System.out.println("4.종료");
+
+        while(true) 
         {
-        System.out.printf("%s , %s , %d",va[i].getSori(),va[i].getDom2(),va[i].getDobi());
+            System.out.print("메뉴 번호> ");
+            String ans=sc.nextLine();
+
+            switch(ans)
+            {
+            case "1":
+            case "2":
+            case "3":
+            case "4":
+                return ans;
+            default :
+                System.out.println("번호 잘못 입력한거같은데 ? 확인좀");
+
+            }
         }
     }
-    
-    
-    static void input()
-    {
-       
-        while(true)
-        {
-        vari v=new vari();
-        
-        System.out.print("쏴리질러!!!");
-        v.setSori(sc.nextLine());
-        System.out.print("둠칫둠칫");
-        v.setDom2(sc.nextLine());
-        System.out.print("두비두밥");
-        v.setDobi(sc.nextInt());
-        System.out.print("게속 둠칫 ? y/n ");
-        String yn=sc.nextLine();
-        
-        va[index++] =v;
-        
-        if(yn.toLowerCase().equals("n"))
-                break;
-        }
-    }
-    
-    public static void main(String[] args) {
-        
-        input();
-        output();
-        sc.close();
+
+    public static void main(String[] args) throws Exception {
+
+        ApplicationContext iocContainer = new ApplicationContext("Controller");
+
+        while (true) { 
+            String menu = swit(); 
+            if (menu.equals("4")){ 
+                System.out.println("안녕히 가세요!"); 
+                break; 
+            }  
+            Controller controller = (Controller)iocContainer.getBean(menu); 
+            if (controller != null) { 
+                controller.service(sc); 
+            } else { 
+                System.out.println("해당 메뉴가 없습니다."); 
+            } 
+        } 
+        sc.close(); 
     }
 }
